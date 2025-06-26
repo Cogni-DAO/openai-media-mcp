@@ -28,14 +28,18 @@ const executeFunction = async ({ prompt, model = 'ray-flash-2', aspect_ratio = '
             'Content-Type': 'application/json'
         };
 
-        // Prepare the request body
+        // Prepare the request body - matching successful built-in MCP format
         const body = JSON.stringify({
+            generation_type: 'video',
             prompt,
             model,
             aspect_ratio,
             resolution,
-            duration,
-            loop
+            duration: `${duration}s`,
+            loop,
+            keyframes: null,
+            callback_url: null,
+            concepts: null
         });
 
         // Perform the fetch request
