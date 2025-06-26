@@ -80,11 +80,15 @@ const apiTool = {
           },
           model: {
             type: 'string',
-            description: 'The model to use for image generation.'
+            description: 'The model to use for image generation.',
+            enum: ['photon-1', 'photon-flash-1'],
+            default: 'photon-flash-1'
           },
           aspect_ratio: {
             type: 'string',
-            description: 'The aspect ratio of the generated image.'
+            description: 'The aspect ratio of the generated image.',
+            enum: ['1:1', '3:4', '4:3', '9:16', '16:9', '9:21', '21:9'],
+            default: '16:9'
           }
         },
         required: ['prompt']
