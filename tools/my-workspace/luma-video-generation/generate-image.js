@@ -8,8 +8,13 @@
  * @returns {Promise<Object>} - The result of the image generation.
  */
 const executeFunction = async ({ prompt, model = 'photon-flash-1', aspect_ratio = '16:9' }) => {
-  const baseUrl = processss.env.BASE_URL;
-  const token = process.env.MY_WORKSPACE_API_KEY;
+  const baseUrl = 'https://api.lumalabs.ai';
+  const token = process.env.LUMA_API_KEY;
+
+  if (!token) {
+    return { error: 'LUMA_API_KEY environment variable is not set.' };
+  }
+
   try {
     // Construct the URL for the request
     const url = `${baseUrl}/dream-machine/v1/generations/image`;
@@ -36,8 +41,14 @@ const executeFunction = async ({ prompt, model = 'photon-flash-1', aspect_ratio 
 
     // Check if the response was successful
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = JSON.stringify(errorData);
+      } catch (e) {
+        // Response wasn't JSON, use the HTTP status message
+      }
+      throw new Error(errorMessage);
     }
 
     // Parse and return the response data
