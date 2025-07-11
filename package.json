@@ -1,7 +1,7 @@
 {
-  "name": "postman-mcp-generator-mcp",
+  "name": "openai-image-generation-mcp",
   "version": "1.0.0",
-  "description": "A simple MCP server with packaged tools",
+  "description": "An MCP server for OpenAI image generation using DALL-E",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -16,6 +16,6 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "author": "Postman, Inc.",
+  "author": "OpenAI MCP Server",
   "license": "MIT"
 }

@@ -1,9 +1,9 @@
-# Postman MCP Generator
+# OpenAI Image Generation MCP Server
 
-Welcome to your generated MCP server! 🚀 This project was created with the [Postman MCP Generator](https://postman.com/explore/mcp-generator), configured to [Model Context Provider (MCP)](https://modelcontextprotocol.io/introduction) Server output mode. It provides you with:
+Welcome to the OpenAI Image Generation MCP server! 🚀 This project provides an [Model Context Provider (MCP)](https://modelcontextprotocol.io/introduction) Server for OpenAI's DALL-E image generation API. It provides you with:
 
 - ✅ An MCP-compatible server (`mcpServer.js`)
-- ✅ Automatically generated JavaScript tools for each selected Postman API request
+- ✅ JavaScript tools for OpenAI image generation, editing, and variations
 
 Let's set things up!
 
@@ -28,23 +28,22 @@ Run from your project's root directory:
 npm install
 ```
 
-### 🔐 Set tool environment variables
+### 🔐 Set OpenAI API Key
 
-In the `.env` file, you'll see environment variable placeholders, one for each workspace that the selected tools are from. For example, if you selected requests from 2 workspaces, e.g. Acme and Widgets, you'll see two placeholders:
+In the `.env` file, you'll need to add your OpenAI API key:
 
 ```
-ACME_API_KEY=
-WIDGETS_API_KEY=
+OPENAI_API_KEY=your-api-key-here
 ```
 
-Update the values with actual API keys for each API. These environment variables are used inside of the generated tools to set the API key for each request. You can inspect a file in the `tools` directory to see how it works.
+You can get your API key from the [OpenAI Platform](https://platform.openai.com/api-keys).
+
+The environment variable is used inside of each tool file to authenticate with OpenAI's API:
 
 ```javascript
 // environment variables are used inside of each tool file
-const apiKey = process.env.ACME_API_KEY;
+const token = process.env.OPENAI_API_KEY;
 ```
-
-**Caveat:** This may not be correct for every API. The generation logic is relatively simple - for each workspace, we create an environment variable with the same name as the workspace slug, and then use that environment variable in each tool file that belongs to that workspace. If this isn't the right behavior for your chosen API, no problem! You can manually update anything in the `.env` file or tool files to accurately reflect the API's method of authentication.
 
 ## 🌐 Test the MCP Server with Postman
 
@@ -175,17 +174,26 @@ Workspace: acme-workspace
         [...additional parameters...]
 ```
 
+## ➕ Available Tools
+
+This MCP server provides the following OpenAI image generation tools:
+
+1. **GenerateImage** - Generate images from text prompts using DALL-E 2 or DALL-E 3
+2. **EditImage** - Edit images using DALL-E 2 with text prompts and optional masks
+3. **CreateImageVariation** - Create variations of existing images using DALL-E 2
+
 ## ➕ Adding New Tools
 
-Extend your MCP server with more tools easily:
+You can extend this MCP server with additional OpenAI tools by:
 
-1. Visit [Postman MCP Generator](https://postman.com/explore/mcp-generator).
-2. Pick new API request(s), generate a new MCP server, and download it.
-3. Copy new generated tool(s) into your existing project's `tools/` folder.
-4. Update your `tools/paths.js` file to include new tool references.
+1. Creating new tool files in the `tools/openai-image-generation/` directory
+2. Following the existing tool structure and patterns
+3. Updating the `tools/paths.js` file to include new tool references
 
 ## 💬 Questions & Support
 
-Visit the [Postman MCP Generator](https://postman.com/explore/mcp-generator) page for updates and new capabilities.
+This MCP server provides access to OpenAI's DALL-E image generation capabilities through the Model Context Protocol.
 
-Join the `#mcp-lab` channel in the [Postman Discord](https://discord.gg/HQJWM8YF) to share what you've built and get help.
+For OpenAI API documentation, visit [OpenAI Platform Documentation](https://platform.openai.com/docs/guides/image-generation).
+
+For MCP-related questions, visit the [Model Context Protocol documentation](https://modelcontextprotocol.io/introduction).
