@@ -12,15 +12,19 @@
  * @param {string} [args.user] - A unique identifier representing your end-user.
  * @returns {Promise<Object>} - The result of the image generation.
  */
-const executeFunction = async ({ 
-  prompt, 
-  model = 'dall-e-3', 
-  n = 1, 
-  quality = 'standard', 
-  response_format = 'url', 
-  size = '1024x1024', 
-  style = 'vivid', 
-  user 
+const executeFunction = async ({
+  prompt,
+  model = 'gpt-image-1',
+  n = 1,
+  quality = 'auto',
+  response_format = 'url',
+  size = '1024x1024',
+  style = 'vivid',
+  user,
+  background = 'auto',
+  moderation = 'auto',
+  output_compression = 100,
+  output_format = 'png'
 }) => {
   const baseUrl = 'https://api.openai.com';
   const token = process.env.API_KEY;
@@ -45,10 +49,20 @@ const executeFunction = async ({
       model,
       n,
       quality,
-      response_format,
-      size,
-      style
+      size
     };
+
+    // Add model-specific parameters
+    if (model === 'gpt-image-1') {
+      body.background = background;
+      body.moderation = moderation;
+      body.output_compression = output_compression;
+      body.output_format = output_format;
+    } else {
+      // For DALL-E models, use response_format and style
+      body.response_format = response_format;
+      body.style = style;
+    }
 
     // Add user if provided
     if (user) {
@@ -99,13 +113,13 @@ const apiTool = {
         properties: {
           prompt: {
             type: 'string',
-            description: 'The text description of the desired image (max 1000 chars for DALL-E 2, 4000 for DALL-E 3).'
+            description: 'The text description of the desired image (max 1000 chars for DALL-E 2, 4000 for DALL-E 3, 32000 for gpt-image-1).'
           },
           model: {
             type: 'string',
             description: 'The model to use for image generation.',
-            enum: ['dall-e-2', 'dall-e-3'],
-            default: 'dall-e-3'
+            enum: ['dall-e-2', 'dall-e-3', 'gpt-image-1'],
+            default: 'gpt-image-1'
           },
           n: {
             type: 'integer',
@@ -116,9 +130,9 @@ const apiTool = {
           },
           quality: {
             type: 'string',
-            description: 'The quality of the image (DALL-E 3 only).',
-            enum: ['standard', 'hd'],
-            default: 'standard'
+            description: 'The quality of the image.',
+            enum: ['standard', 'hd', 'auto'],
+            default: 'auto'
           },
           response_format: {
             type: 'string',
@@ -141,6 +155,31 @@ const apiTool = {
           user: {
             type: 'string',
             description: 'A unique identifier representing your end-user.'
+          },
+          background: {
+            type: 'string',
+            description: 'Background transparency for gpt-image-1 (transparent, opaque, or auto).',
+            enum: ['transparent', 'opaque', 'auto'],
+            default: 'auto'
+          },
+          moderation: {
+            type: 'string',
+            description: 'Content moderation level for gpt-image-1 (low or auto).',
+            enum: ['low', 'auto'],
+            default: 'auto'
+          },
+          output_compression: {
+            type: 'integer',
+            description: 'Compression level (0-100%) for gpt-image-1 with webp/jpeg formats.',
+            minimum: 0,
+            maximum: 100,
+            default: 100
+          },
+          output_format: {
+            type: 'string',
+            description: 'Output format for gpt-image-1 (png, jpeg, or webp).',
+            enum: ['png', 'jpeg', 'webp'],
+            default: 'png'
           }
         },
         required: ['prompt']

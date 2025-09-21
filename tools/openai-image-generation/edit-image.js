@@ -12,15 +12,15 @@
  * @param {string} [args.user] - A unique identifier representing your end-user.
  * @returns {Promise<Object>} - The result of the image editing.
  */
-const executeFunction = async ({ 
-  image, 
-  prompt, 
-  mask, 
-  model = 'gpt-image-1', 
-  n = 1, 
-  response_format = 'url', 
-  size = '1024x1024', 
-  user 
+const executeFunction = async ({
+  image,
+  prompt,
+  mask,
+  model = 'gpt-image-1',
+  n = 1,
+  response_format = 'url',
+  size = '1024x1024',
+  user
 }) => {
   const baseUrl = 'https://api.openai.com';
   const token = process.env.API_KEY;
@@ -40,11 +40,11 @@ const executeFunction = async ({
 
     // Prepare the form data
     const formData = new FormData();
-    
+
     // Convert base64 image to blob
     const imageBlob = new Blob([Buffer.from(image, 'base64')], { type: 'image/png' });
     formData.append('image', imageBlob, 'image.png');
-    
+
     formData.append('prompt', prompt);
     formData.append('model', model);
     formData.append('n', n.toString());
@@ -119,8 +119,8 @@ const apiTool = {
           model: {
             type: 'string',
             description: 'The model to use for image editing.',
-            enum: ['dall-e-2'],
-            default: 'dall-e-2'
+            enum: ['dall-e-2', 'gpt-image-1'],
+            default: 'gpt-image-1'
           },
           n: {
             type: 'integer',
