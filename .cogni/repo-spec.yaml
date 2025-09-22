@@ -1,0 +1,40 @@
+# Cogni Git Review Repository Specification Template
+# Copy this file to .cogni/repo-spec.yaml and customize for your repository
+
+schema_version: '0.1.4'
+
+intent:
+  name: openai-media-mcp
+  goals:
+    - Simple agent tools for interacting with OpenAI's media APIs
+    - Be an MCP compatible server
+    - Enable agents to create images, videos, and audio
+    - Enable agents to manage generated files
+  non_goals:
+    - No LLM calls
+    - No API usage outside of OpenAI
+
+# Gates run in the order they appear below.
+gates:
+  # Built-in gates (run directly in bot process)
+  - type: review-limits
+    id: review_limits
+    with:
+      max_changed_files: 30
+      max_total_diff_kb: 100
+
+  # # Ensure AGENTS.md files are updated when code changes
+  # - type: agents-md-sync
+  #   id: agents_md_sync
+  #   # with:  # Optional configuration
+  #   #   code_patterns: ["src/**/*.js", "lib/**/*.ts"]  # Files that require doc updates
+  #   #   doc_pattern: "AGENTS.md"                       # Documentation file to check
+
+  # - type: ai-rule
+  #   with:
+  #     rule_file: goal-alignment.yaml
+
+  - type: goal-declaration
+    id: goal_declaration
+  # - type: forbidden-scopes
+  #   id: forbidden_scopes
