@@ -30,9 +30,9 @@ gates:
   #   #   code_patterns: ["src/**/*.js", "lib/**/*.ts"]  # Files that require doc updates
   #   #   doc_pattern: "AGENTS.md"                       # Documentation file to check
 
-  # - type: ai-rule
-  #   with:
-  #     rule_file: goal-alignment.yaml
+  - type: ai-rule
+    with:
+      rule_file: only-openai-media.yaml
 
   - type: goal-declaration
     id: goal_declaration
